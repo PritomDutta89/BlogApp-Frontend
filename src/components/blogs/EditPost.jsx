@@ -1,42 +1,76 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { fetchSingleBlog, updateBlogPost } from "../../services/Api";
 
 const EditPost = () => {
+  const [title, setTitle] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    getSingleBlogList();
+  }, [id]);
+
+  const getSingleBlogList = async () => {
+    const data = await fetchSingleBlog(id);
+    setTitle(data?.data?.title ? data?.data?.title : "");
+    setImgUrl(data?.data?.imageURL ? data?.data?.imageURL : "");
+    setDescription(data?.data?.content ? data?.data?.content : "");
+  };
+
+  const deletePost = async (e) => {
+    e.preventDefault();
+
+    const postData = {
+      title: title,
+      content: description,
+      imageURL: imgUrl,
+    };
+
+    const data = await updateBlogPost(id, postData);
+
+    if (data) {
+      toast.success("Post updated successfully!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTitle("");
+      setImgUrl("");
+      setDescription("");
+
+      setTimeout(() => {
+        navigate(-1);
+      }, 1000);
+    } else {
+      toast.error("Please try again.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   return (
     <div>
-      <form className="px-[2rem] mt-5">
+      <form className="px-[2rem] mt-14" onSubmit={deletePost}>
         <div className="grid gap-6 mb-6 md:grid-cols-2 ">
-          {/* <div>
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              First name
-            </label>
-            <input
-              type="text"
-              id="first_name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="John"
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="last_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Last name
-            </label>
-            <input
-              type="text"
-              id="last_name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Doe"
-              required
-            />
-          </div> */}
-
           <div>
             <label
               htmlFor="website"
@@ -49,6 +83,8 @@ const EditPost = () => {
               id="website"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm py-[0.8rem] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
@@ -57,13 +93,15 @@ const EditPost = () => {
               htmlFor="website"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Upload Image
+              Upload Image URL
             </label>
             <input
-              type="file"
+              type="text"
               id="website"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Title"
+              className="bg-gray-50 py-[0.8rem] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Upload Image URL"
+              value={imgUrl}
+              onChange={(e) => setImgUrl(e.target.value)}
             />
           </div>
         </div>
@@ -80,6 +118,8 @@ const EditPost = () => {
             rows="4"
             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Write your thoughts here..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           ></textarea>
         </div>
 
@@ -90,6 +130,7 @@ const EditPost = () => {
           Submit
         </button>
       </form>
+      <ToastContainer />
     </div>
   );
 };
