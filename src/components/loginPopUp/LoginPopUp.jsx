@@ -170,7 +170,7 @@ const LoginPopUp = ({ setShowLogin }) => {
                     htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your password
+                    Your password (Minimum 8 character)
                   </label>
                   <input
                     type="password"
