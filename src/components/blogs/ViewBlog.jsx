@@ -31,15 +31,17 @@ const ViewBlog = () => {
     <>
       <div className="mt-4 flex justify-center items-center">
         {loading ? (
-          <Oval
-            visible={true}
-            height="100"
-            width="80"
-            color="#4fa94d"
-            ariaLabel="oval-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
+          <div className="flex justify-center items-center h-[24rem]">
+            <Oval
+              visible={true}
+              height="50"
+              width="80"
+              color="#4fa94d"
+              ariaLabel="oval-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          </div>
         ) : (
           <div className="w-[70%] md:w-[50%] flex flex-col justify-center items-center">
             <p className="text-[#1E2026] text-[1.7rem] font-bold md:px-6">

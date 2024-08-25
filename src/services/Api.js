@@ -1,8 +1,9 @@
 import axios from "axios";
+import { BASE_URL } from "./helper";
 
 export const fetchBlogList = async () => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/posts`);
+    const response = await axios.get(`${BASE_URL}/api/posts`);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -11,7 +12,7 @@ export const fetchBlogList = async () => {
 
 export const createBlogPost = async (data) => {
   try {
-    const response = await axios.post(`http://localhost:5000/api/posts`, data);
+    const response = await axios.post(`${BASE_URL}/api/posts`, data);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -20,7 +21,7 @@ export const createBlogPost = async (data) => {
 
 export const fetchSingleBlog = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+    const response = await axios.get(`${BASE_URL}/api/posts/${id}`);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -29,9 +30,7 @@ export const fetchSingleBlog = async (id) => {
 
 export const deleteBlogPost = async (id) => {
   try {
-    const response = await axios.delete(
-      `http://localhost:5000/api/posts/${id}`
-    );
+    const response = await axios.delete(`${BASE_URL}/api/posts/${id}`);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -40,10 +39,7 @@ export const deleteBlogPost = async (id) => {
 
 export const updateBlogPost = async (id, data) => {
   try {
-    const response = await axios.put(
-      `http://localhost:5000/api/posts/${id}`,
-      data
-    );
+    const response = await axios.put(`${BASE_URL}/api/posts/${id}`, data);
     return response.data;
   } catch (err) {
     console.log(err);
@@ -52,7 +48,7 @@ export const updateBlogPost = async (id, data) => {
 
 export async function LoginApi(data) {
   try {
-    const url = `http://localhost:5000/api/user/login`;
+    const url = `${BASE_URL}/api/user/login`;
     const res = await axios.post(url, data);
 
     return res;
@@ -63,7 +59,7 @@ export async function LoginApi(data) {
 
 export async function RegisterApi(data) {
   try {
-    const url = `http://localhost:5000/api/user/register`;
+    const url = `${BASE_URL}/api/user/register`;
     const res = await axios.post(url, data);
 
     return res;
