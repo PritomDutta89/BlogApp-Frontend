@@ -5,10 +5,10 @@ import logo from "../../assets/logo.svg";
 const Footer = () => {
   return (
     <>
-    {/* fixed bottom-0  */}
+      {/* sticky bottom-0  */}
       <div
         id="explore-contact"
-        className="text-black w-full rounded-lg bg-[#f0f0f0] flex flex-col items-center p-[3rem] md:px-[6rem] mt-[3rem]"
+        className="text-black   z-10 w-full rounded-lg bg-[#f0f0f0] flex flex-col items-center p-[3rem] md:px-[6rem] mt-[3rem]"
       >
         <div className="w-[100%] grid md:grid-cols-3 gap-[3rem] md:gap-[8rem]">
           <div className="flex flex-col items-start gap-5">

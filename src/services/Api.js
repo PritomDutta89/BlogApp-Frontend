@@ -40,9 +40,34 @@ export const deleteBlogPost = async (id) => {
 
 export const updateBlogPost = async (id, data) => {
   try {
-    const response = await axios.put(`http://localhost:5000/api/posts/${id}`, data);
+    const response = await axios.put(
+      `http://localhost:5000/api/posts/${id}`,
+      data
+    );
     return response.data;
   } catch (err) {
     console.log(err);
   }
 };
+
+export async function LoginApi(data) {
+  try {
+    const url = `http://localhost:5000/api/user/login`;
+    const res = await axios.post(url, data);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function RegisterApi(data) {
+  try {
+    const url = `http://localhost:5000/api/user/register`;
+    const res = await axios.post(url, data);
+
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
