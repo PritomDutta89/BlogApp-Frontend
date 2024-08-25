@@ -25,6 +25,9 @@ This repository contains the frontend code for a Blog platform, built using Reac
 **Reusable Components:** Navbar, Footer, and Login popup components for a consistent UI.
 
 
+**Backend Repo - https://github.com/PritomDutta89/BlogApp-backend**
+
+
 
 **Installation**
 
