@@ -7,7 +7,7 @@ import ViewBlog from "./components/blogs/ViewBlog";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/Navbar";
 import { Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+// import { ToastContainer, toast } from "react-toastify";
 import { DataProvider, useDataContext } from "./context/DataContext";
 import LoginPopUp from "./components/loginPopUp/LoginPopUp";
 import PrivateRoute from "./PrivateRoute";
@@ -36,7 +36,7 @@ function App() {
           />
         </Routes>
         <Footer />
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </DataProvider>
     </>
   );

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { LoginApi, RegisterApi } from "../../services/Api";
 import { useDataContext } from "../../context/DataContext";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginPopUp = ({ setShowLogin }) => {
@@ -26,7 +26,6 @@ const LoginPopUp = ({ setShowLogin }) => {
       const res = await LoginApi(data);
 
       if (res.data.success) {
-        console.log("login: ", res);
         setToken(res.data.token);
         localStorage.setItem("token", res.data.token);
         setShowLogin(false);
@@ -61,7 +60,7 @@ const LoginPopUp = ({ setShowLogin }) => {
         localStorage.setItem("token: ", res.data.token);
         setShowLogin(false);
 
-        toast.success("Login Successfully!", {
+        toast.success("Register Successfully!", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -91,7 +90,7 @@ const LoginPopUp = ({ setShowLogin }) => {
       <div
         id="authentication-modal"
         tabIndex="-1"
-        aria-hidden="true"
+        // aria-hidden="true"
         className="overflow-y-auto flex overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative p-4 w-full max-w-md max-h-full">
@@ -110,7 +109,7 @@ const LoginPopUp = ({ setShowLogin }) => {
               >
                 <svg
                   className="w-3 h-3"
-                  aria-hidden="true"
+                  //   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 14 14"
@@ -184,30 +183,7 @@ const LoginPopUp = ({ setShowLogin }) => {
                     required
                   />
                 </div>
-                {currState === "Login" && (
-                  <div className="flex justify-end">
-                    {/* <div className="flex items-start">
-                      <div className="flex items-center h-5">
-                        <input
-                          id="remember"
-                          type="checkbox"
-                          value=""
-                          className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                          required
-                        />
-                      </div>
-                      <label
-                        htmlFor="remember"
-                        className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                      >
-                        Remember me
-                      </label>
-                    </div> */}
-                    <a href="#" className="text-sm text-red-500 ">
-                      Lost Password?
-                    </a>
-                  </div>
-                )}
+
                 <button
                   type="submit"
                   className="w-full text-white bg-red-500 hover:bg-red-800  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
