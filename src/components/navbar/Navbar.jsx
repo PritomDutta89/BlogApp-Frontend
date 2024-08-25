@@ -37,14 +37,15 @@ const Navbar = ({ setShowLogin }) => {
             }}
             className="cursor-pointer"
           >
-            <img src={logo} alt="" />
+            {/* <img src={logo} alt="" /> */}
+            <p className="text-black font-bold text-[1.7rem] dark:text-white">ZuAI</p>
           </div>
 
           <div className="flex items-center justify-center">
             {!token ? (
               <button
                 type="button"
-                className="mr-3 text-gray-800 border border-[#6947BF] hover:bg-[#f5f4fa] transition duration-0.3  font-medium rounded-full text-xs px-3 md:px-6 py-1 md:py-2.5  text-center"
+                className="mr-3 text-gray-800 border border-[#6947BF] hover:bg-[#f5f4fa] transition duration-0.3  font-medium rounded-full text-xs px-3 md:px-6 py-1 md:py-2.5  text-center dark:text-white"
                 onClick={() => setShowLogin(true)}
               >
                 Login
@@ -52,7 +53,7 @@ const Navbar = ({ setShowLogin }) => {
             ) : (
               <button
                 type="button"
-                className="mr-3 text-gray-800 border border-[#6947BF] hover:bg-[#f5f4fa] transition duration-0.3  font-medium rounded-full text-xs px-3 md:px-6 py-1 md:py-2.5  text-center"
+                className="mr-3 text-gray-800 border border-[#6947BF] hover:bg-[#f5f4fa] transition duration-0.3  font-medium rounded-full text-xs px-3 md:px-6 py-1 md:py-2.5  text-center dark:text-white"
                 onClick={() => {
                   handleLogout();
                 }}
