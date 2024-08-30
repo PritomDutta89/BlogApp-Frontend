@@ -67,3 +67,14 @@ export async function RegisterApi(data) {
     console.log(error);
   }
 }
+
+export async function getImgUrlAPI(data) {
+  try {
+    const url = import.meta.env.VITE_IMG_URL;
+    const res = await axios.post(url, data);
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import { createBlogPost } from "../../services/Api";
+import { createBlogPost, getImgUrlAPI } from "../../services/Api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
-  const [imgUrl, setImgUrl] = useState("");
+  // const [imgUrl, setImgUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
   const [cardSummary, setCardSummary] = useState("");
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const CreatePost = () => {
       title: title,
       content: description,
       cardSummary: cardSummary,
-      imageURL: imgUrl,
+      imageURL: imageUrl,
     };
     const data = await createBlogPost(postData);
 
@@ -36,7 +37,7 @@ const CreatePost = () => {
       });
 
       setTitle("");
-      setImgUrl("");
+      setImageUrl("");
       setDescription("");
       setCardSummary("");
 
@@ -55,6 +56,21 @@ const CreatePost = () => {
         theme: "light",
       });
     }
+  };
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+
+    formData.append("file", file);
+    formData.append("upload_preset", "hunger-img"); // Replace 'your_upload_preset' with the actual name of your preset
+
+    const data = await getImgUrlAPI(formData);
+    setImageUrl(
+      data?.url
+        ? data?.url
+        : "https://www.istockphoto.com/photo/snack-junk-fast-food-on-table-in-restaurant-soup-sauce-ornament-grill-hamburger-gm1457979959-492655950?utm_source=pixabay&utm_medium=affiliate&utm_campaign=SRP_image_sponsored&utm_content=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Ffood%2F&utm_term=food"
+    );
   };
 
   return (
@@ -84,15 +100,15 @@ const CreatePost = () => {
               htmlFor="website"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Upload Image URL
+              Upload Image URL<span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
+              type="file"
               id="website"
               className="bg-gray-50 py-[0.8rem] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value={imgUrl}
-              onChange={(e) => setImgUrl(e.target.value)}
+              onChange={handleImageUpload}
               placeholder="Upload Image URL"
+              required
             />
           </div>
         </div>

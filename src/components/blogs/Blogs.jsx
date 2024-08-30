@@ -14,7 +14,7 @@ const Blogs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const { token, setToken } = useDataContext();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     getBlogList();
