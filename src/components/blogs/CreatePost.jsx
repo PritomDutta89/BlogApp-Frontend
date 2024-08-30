@@ -100,7 +100,7 @@ const CreatePost = () => {
               htmlFor="website"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Upload Image URL<span className="text-red-500">*</span>
+              Upload Image<span className="text-red-500">*</span>
             </label>
             <input
               type="file"
