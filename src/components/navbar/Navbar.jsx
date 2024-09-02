@@ -24,12 +24,12 @@ const Navbar = ({ setShowLogin }) => {
       progress: undefined,
       theme: "light",
     });
-    setShowLogin(false)
+    setShowLogin(false);
   };
 
   return (
     <>
-      <nav className="sticky top-0 z-10 border-gray-200 bg-gray-50  dark:bg-gray-800 dark:border-gray-700">
+      <nav className="sticky top-0 z-10 border-gray-200 bg-gray-50   ">
         <div className=" mx-5 flex flex-wrap items-center justify-between p-4">
           <div
             onClick={() => {
@@ -38,14 +38,14 @@ const Navbar = ({ setShowLogin }) => {
             className="cursor-pointer"
           >
             {/* <img src={logo} alt="" /> */}
-            <p className="text-black font-bold text-[1.7rem] dark:text-white">ZuAI</p>
+            <p className="text-black font-bold text-[1.7rem]  ">ZuAI</p>
           </div>
 
           <div className="flex items-center justify-center">
             {!token ? (
               <button
                 type="button"
-                className="mr-3 text-gray-800 border border-[#6947BF] hover:bg-[#f5f4fa] transition duration-0.3  font-medium rounded-full text-xs px-3 md:px-6 py-1 md:py-2.5  text-center dark:text-white"
+                className="mr-3 text-gray-800 border border-[#6947BF] hover:bg-[#f5f4fa] transition duration-0.3  font-medium rounded-full text-xs px-3 md:px-6 py-1 md:py-2.5  text-center  "
                 onClick={() => setShowLogin(true)}
               >
                 Login
@@ -53,7 +53,7 @@ const Navbar = ({ setShowLogin }) => {
             ) : (
               <button
                 type="button"
-                className="mr-3 text-gray-800 border border-[#6947BF] hover:bg-[#f5f4fa] transition duration-0.3  font-medium rounded-full text-xs px-3 md:px-6 py-1 md:py-2.5  text-center dark:text-white"
+                className="mr-3 text-gray-800 border border-[#6947BF] hover:bg-[#f5f4fa] transition duration-0.3  font-medium rounded-full text-xs px-3 md:px-6 py-1 md:py-2.5  text-center  "
                 onClick={() => {
                   handleLogout();
                 }}

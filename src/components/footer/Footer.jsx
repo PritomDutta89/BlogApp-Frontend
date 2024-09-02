@@ -40,7 +40,7 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <hr className="h-[1px] w-[100%] my-4 bg-gray-500 border-0 dark:bg-gray-700" />
+        <hr className="h-[1px] w-[100%] my-4 bg-gray-500 border-0 " />
         <p className="mb-[-2rem]">
           Copyright 2024 @ ZuAI.com - All Right Reserved.
         </p>

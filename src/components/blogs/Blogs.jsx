@@ -34,6 +34,7 @@ const Blogs = () => {
   const getBlogList = async () => {
     setLoading(true);
     const data = await fetchBlogList();
+    console.log(data?.data)
     setAllList(data?.data ? data?.data : []);
     setFilteredBlogs(data?.data ? data?.data : []);
     setLoading(false);
@@ -80,7 +81,7 @@ const Blogs = () => {
           <div className="relative md:ml-8">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <svg
-                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                className="w-4 h-4 text-gray-500"
                 // aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -130,7 +131,7 @@ const Blogs = () => {
             {filteredBlogs.map((item, index) => (
               <div
                 key={index}
-                className=" bg-white h-[34rem] overflow-auto border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                className=" bg-white h-[34rem] overflow-auto border border-gray-200 rounded-lg shadow "
               >
                 <img
                   className="rounded-lg w-full h-[20rem]"
@@ -142,10 +143,10 @@ const Blogs = () => {
                   alt="icon"
                 />
                 <div className="p-5">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
                     {item?.title ? item?.title.substring(0, 50) : "-"}
                   </h5>
-                  <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                  <p className="mb-3 font-normal text-gray-700 ">
                     {item?.cardSummary
                       ? item?.cardSummary.substring(0, 105)
                       : "-"}
@@ -153,7 +154,7 @@ const Blogs = () => {
 
                   <button
                     onClick={() => readMore(item._id)}
-                    className="inline-flex  items-center justify-center  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="inline-flex  items-center justify-center  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
                   >
                     Read more
                     <svg
