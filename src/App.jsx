@@ -11,33 +11,38 @@ import { Routes, Route } from "react-router-dom";
 import { DataProvider, useDataContext } from "./context/DataContext";
 import LoginPopUp from "./components/loginPopUp/LoginPopUp";
 import PrivateRoute from "./PrivateRoute";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
-      <DataProvider>
-        {showLogin && <LoginPopUp setShowLogin={setShowLogin} />}
-        <Navbar setShowLogin={setShowLogin} />
-        <Routes>
-          <Route path="/" element={<Blogs />} />
-          <Route
-            path="/viewBlog/:id"
-            element={<PrivateRoute element={ViewBlog} />}
-          />
-          <Route
-            path="/editPost/:id"
-            element={<PrivateRoute element={EditPost} />}
-          />
-          <Route
-            path="/createPost"
-            element={<PrivateRoute element={CreatePost} />}
-          />
-        </Routes>
-        <Footer />
-        {/* <ToastContainer /> */}
-      </DataProvider>
+      <QueryClientProvider client={queryClient}>
+        <DataProvider>
+          {showLogin && <LoginPopUp setShowLogin={setShowLogin} />}
+          <Navbar setShowLogin={setShowLogin} />
+          <Routes>
+            <Route path="/" element={<Blogs />} />
+            <Route
+              path="/viewBlog/:id"
+              element={<PrivateRoute element={ViewBlog} />}
+            />
+            <Route
+              path="/editPost/:id"
+              element={<PrivateRoute element={EditPost} />}
+            />
+            <Route
+              path="/createPost"
+              element={<PrivateRoute element={CreatePost} />}
+            />
+          </Routes>
+          <Footer />
+          {/* <ToastContainer /> */}
+        </DataProvider>
+      </QueryClientProvider>
     </>
   );
 }

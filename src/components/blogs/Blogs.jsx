@@ -7,38 +7,58 @@ import { Oval } from "react-loader-spinner";
 import { useDataContext } from "../../context/DataContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 const Blogs = () => {
-  const [allList, setAllList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [allList, setAllList] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredBlogs, setFilteredBlogs] = useState([]);
-  const { token, setToken } = useDataContext();
-  const navigate = useNavigate(); 
+  const { token } = useDataContext();
+  const navigate = useNavigate();
+
+  // Queries
+  const { isLoading, error, data } = useQuery("blogList", fetchBlogList);
+
+  // useEffect(() => {
+  //   getBlogList();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (data) setFilteredBlogs(data?.data);
+  // }, [data]);
+
+  // useEffect(() => {
+  //   if (searchQuery.trim()) {
+  //     const filterData = allList.filter((item) =>
+  //       item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  //     );
+  //     setFilteredBlogs(filterData);
+  //   } else {
+  //     setFilteredBlogs(allList);
+  //   }
+  // }, [allList, searchQuery]);
 
   useEffect(() => {
-    getBlogList();
-  }, []);
-
-  useEffect(() => {
+    // setFilteredBlogs(data?.data ? data?.data : []);
     if (searchQuery.trim()) {
-      const filterData = allList.filter((item) =>
+      const filterData = data?.data?.filter((item) =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredBlogs(filterData);
     } else {
-      setFilteredBlogs(allList);
+      setFilteredBlogs(data?.data);
     }
-  }, [allList, searchQuery]);
+  }, [data, searchQuery]);
 
-  const getBlogList = async () => {
-    setLoading(true);
-    const data = await fetchBlogList();
-    console.log(data?.data)
-    setAllList(data?.data ? data?.data : []);
-    setFilteredBlogs(data?.data ? data?.data : []);
-    setLoading(false);
-  };
+  // const getBlogList = async () => {
+  //   setLoading(true);
+  //   const data = await fetchBlogList();
+  //   console.log(data?.data);
+  //   setAllList(data?.data ? data?.data : []);
+  //   setFilteredBlogs(data?.data ? data?.data : []);
+  //   setLoading(false);
+  // };
 
   const createPost = () => {
     if (token) {
@@ -73,6 +93,13 @@ const Blogs = () => {
       });
     }
   };
+
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-[24rem]">
+        Error loading posts
+      </div>
+    );
 
   return (
     <>
@@ -114,7 +141,7 @@ const Blogs = () => {
             Create Post
           </button>
         </div>
-        {loading ? (
+        {isLoading ? (
           <div className="flex justify-center items-center h-[20rem]">
             <Oval
               visible={true}
@@ -126,9 +153,9 @@ const Blogs = () => {
               wrapperClass=""
             />
           </div>
-        ) : filteredBlogs.length > 0 ? (
+        ) : filteredBlogs?.length > 0 ? (
           <div className="px-8 grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
-            {filteredBlogs.map((item, index) => (
+            {filteredBlogs?.map((item, index) => (
               <div
                 key={index}
                 className=" bg-white h-[34rem] overflow-auto border border-gray-200 rounded-lg shadow "

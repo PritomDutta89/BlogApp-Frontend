@@ -37,8 +37,8 @@ const Navbar = ({ setShowLogin }) => {
             }}
             className="cursor-pointer"
           >
-            {/* <img src={logo} alt="" /> */}
-            <p className="text-black font-bold text-[1.7rem]  ">ZuAI</p>
+            <img src={logo} alt="" />
+            {/* <p className="text-black font-bold text-[1.7rem]  ">ZuAI</p> */}
           </div>
 
           <div className="flex items-center justify-center">
