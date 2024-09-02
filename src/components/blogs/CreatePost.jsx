@@ -4,6 +4,7 @@ import { createBlogPost, getImgUrlAPI } from "../../services/Api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -13,18 +14,8 @@ const CreatePost = () => {
   const [cardSummary, setCardSummary] = useState("");
   const navigate = useNavigate();
 
-  const createPost = async (e) => {
-    e.preventDefault();
-
-    const postData = {
-      title: title,
-      content: description,
-      cardSummary: cardSummary,
-      imageURL: imageUrl,
-    };
-    const data = await createBlogPost(postData);
-
-    if (data) {
+  const mutation = useMutation(createBlogPost, {
+    onSuccess: () => {
       toast.success("Post created successfully!", {
         position: "top-center",
         autoClose: 5000,
@@ -36,15 +27,18 @@ const CreatePost = () => {
         theme: "light",
       });
 
+      // Reset form fields
       setTitle("");
       setImageUrl("");
       setDescription("");
       setCardSummary("");
 
+      // Navigate after success
       setTimeout(() => {
         navigate("/");
       }, 1000);
-    } else {
+    },
+    onError: () => {
       toast.error("Please try again.", {
         position: "top-center",
         autoClose: 5000,
@@ -55,7 +49,38 @@ const CreatePost = () => {
         progress: undefined,
         theme: "light",
       });
-    }
+    },
+  });
+
+  const imageUploadMutation = useMutation(getImgUrlAPI, {
+    onSuccess: (data) => {
+      // Set the image URL upon successful upload
+      setImageUrl(
+        data?.url
+          ? data.url
+          : "https://www.istockphoto.com/photo/snack-junk-fast-food-on-table-in-restaurant-soup-sauce-ornament-grill-hamburger-gm1457979959-492655950?utm_source=pixabay&utm_medium=affiliate&utm_campaign=SRP_image_sponsored&utm_content=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Ffood%2F&utm_term=food"
+      );
+    },
+    onError: (error) => {
+      console.error("Image upload error:", error);
+      setImageUrl(
+        "https://www.istockphoto.com/photo/snack-junk-fast-food-on-table-in-restaurant-soup-sauce-ornament-grill-hamburger-gm1457979959-492655950?utm_source=pixabay&utm_medium=affiliate&utm_campaign=SRP_image_sponsored&utm_content=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Ffood%2F&utm_term=food"
+      );
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const postData = {
+      title: title,
+      content: description,
+      cardSummary: cardSummary,
+      imageURL: imageUrl,
+    };
+
+    // for post req
+    mutation.mutate(postData);
   };
 
   const handleImageUpload = async (event) => {
@@ -65,17 +90,17 @@ const CreatePost = () => {
     formData.append("file", file);
     formData.append("upload_preset", "hunger-img"); // Replace 'your_upload_preset' with the actual name of your preset
 
-    const data = await getImgUrlAPI(formData);
-    setImageUrl(
-      data?.url
-        ? data?.url
-        : "https://www.istockphoto.com/photo/snack-junk-fast-food-on-table-in-restaurant-soup-sauce-ornament-grill-hamburger-gm1457979959-492655950?utm_source=pixabay&utm_medium=affiliate&utm_campaign=SRP_image_sponsored&utm_content=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Ffood%2F&utm_term=food"
-    );
+    // call for post req for img uploading
+    imageUploadMutation.mutate(formData)
   };
 
   return (
     <div>
-      <form className="px-[2rem] mt-5" onSubmit={createPost}>
+      <form
+        className="px-[2rem] mt-5"
+        //  onSubmit={createPost}
+        onSubmit={handleSubmit}
+      >
         <div className="grid gap-6 mb-6 md:grid-cols-2 ">
           <div>
             <label
@@ -132,9 +157,7 @@ const CreatePost = () => {
             }
             required
           ></textarea>
-          <p className="text-sm text-gray-600  ">
-            {cardSummary.length}/100
-          </p>
+          <p className="text-sm text-gray-600  ">{cardSummary.length}/100</p>
         </div>
 
         <div>

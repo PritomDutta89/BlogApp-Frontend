@@ -1,46 +1,22 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-// import img1 from "../../assets/img-1.png";
 import { useNavigate } from "react-router-dom";
 import { fetchBlogList } from "../../services/Api";
 import { Oval } from "react-loader-spinner";
 import { useDataContext } from "../../context/DataContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 
 const Blogs = () => {
-  // const [allList, setAllList] = useState([]);
-  // const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const { token } = useDataContext();
   const navigate = useNavigate();
-
   // Queries
   const { isLoading, error, data } = useQuery("blogList", fetchBlogList);
 
-  // useEffect(() => {
-  //   getBlogList();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (data) setFilteredBlogs(data?.data);
-  // }, [data]);
-
-  // useEffect(() => {
-  //   if (searchQuery.trim()) {
-  //     const filterData = allList.filter((item) =>
-  //       item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  //     );
-  //     setFilteredBlogs(filterData);
-  //   } else {
-  //     setFilteredBlogs(allList);
-  //   }
-  // }, [allList, searchQuery]);
-
   useEffect(() => {
-    // setFilteredBlogs(data?.data ? data?.data : []);
     if (searchQuery.trim()) {
       const filterData = data?.data?.filter((item) =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -50,15 +26,6 @@ const Blogs = () => {
       setFilteredBlogs(data?.data);
     }
   }, [data, searchQuery]);
-
-  // const getBlogList = async () => {
-  //   setLoading(true);
-  //   const data = await fetchBlogList();
-  //   console.log(data?.data);
-  //   setAllList(data?.data ? data?.data : []);
-  //   setFilteredBlogs(data?.data ? data?.data : []);
-  //   setLoading(false);
-  // };
 
   const createPost = () => {
     if (token) {

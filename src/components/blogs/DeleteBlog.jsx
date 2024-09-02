@@ -4,16 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { deleteBlogPost } from "../../services/Api";
+import { useMutation } from "react-query";
 
 // eslint-disable-next-line react/prop-types
 const DeleteBlog = ({ toggleDeleteModal, setToggleDeleteModal, id }) => {
   const navigate = useNavigate();
 
-  const deletePost = async () => {
-    console.log(id);
-    const data = await deleteBlogPost(id);
-    console.log(data);
-    if (data?.success) {
+  // for delete post
+  const deletePost = useMutation(deleteBlogPost, {
+    onSuccess: () => {
       toast.success("Post deleted successfully!", {
         position: "top-center",
         autoClose: 5000,
@@ -24,11 +23,13 @@ const DeleteBlog = ({ toggleDeleteModal, setToggleDeleteModal, id }) => {
         progress: undefined,
         theme: "light",
       });
+      setToggleDeleteModal(false);
 
       setTimeout(() => {
         navigate("/");
       }, 1000);
-    } else {
+    },
+    onError: () => {
       toast.error("Please try again.", {
         position: "top-center",
         autoClose: 5000,
@@ -39,8 +40,13 @@ const DeleteBlog = ({ toggleDeleteModal, setToggleDeleteModal, id }) => {
         progress: undefined,
         theme: "light",
       });
-    }
-    setToggleDeleteModal(false);
+      setToggleDeleteModal(false);
+    },
+  });
+
+  const handleDeletePost = async () => {
+    // const data = await deleteBlogPost(id);
+    deletePost.mutate(id)
   };
 
   return (
@@ -97,7 +103,8 @@ const DeleteBlog = ({ toggleDeleteModal, setToggleDeleteModal, id }) => {
                 data-modal-hide="popup-modal"
                 type="button"
                 className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                onClick={deletePost}
+                // onClick={deletePost}
+                onClick={handleDeletePost}
               >
                 Yes, I am sure
               </button>

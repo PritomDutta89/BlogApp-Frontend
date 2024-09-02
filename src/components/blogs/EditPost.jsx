@@ -5,40 +5,32 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fetchSingleBlog, updateBlogPost } from "../../services/Api";
 import { Oval } from "react-loader-spinner";
+import { useMutation } from "react-query";
+import { useQuery } from "react-query";
 
 const EditPost = () => {
   const [title, setTitle] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
 
-  useEffect(() => {
-    getSingleBlogList();
-  }, [id]);
+  // Queries - get [for fetching the specific data] - getSingleBlogList
+  const { isLoading, error, data } = useQuery(
+    ["getSingleBlogList", id],
+    () => fetchSingleBlog(id),
+    {
+      onSuccess: (data) => {
+        setTitle(data?.data?.title ? data?.data?.title : "");
+        setImgUrl(data?.data?.imageURL ? data?.data?.imageURL : "");
+        setDescription(data?.data?.content ? data?.data?.content : "");
+      },
+    }
+  );
 
-  const getSingleBlogList = async () => {
-    setLoading(true);
-    const data = await fetchSingleBlog(id);
-    setTitle(data?.data?.title ? data?.data?.title : "");
-    setImgUrl(data?.data?.imageURL ? data?.data?.imageURL : "");
-    setDescription(data?.data?.content ? data?.data?.content : "");
-    setLoading(false);
-  };
-
-  const deletePost = async (e) => {
-    e.preventDefault();
-
-    const postData = {
-      title: title,
-      content: description,
-      imageURL: imgUrl,
-    };
-
-    const data = await updateBlogPost(id, postData);
-
-    if (data) {
+  // for edit post
+  const editPost = useMutation(updateBlogPost, {
+    onSuccess: () => {
       toast.success("Post updated successfully!", {
         position: "top-center",
         autoClose: 5000,
@@ -57,7 +49,8 @@ const EditPost = () => {
       setTimeout(() => {
         navigate(-1);
       }, 1000);
-    } else {
+    },
+    onError: () => {
       toast.error("Please try again.", {
         position: "top-center",
         autoClose: 5000,
@@ -68,12 +61,32 @@ const EditPost = () => {
         progress: undefined,
         theme: "light",
       });
-    }
+    },
+  });
+
+  const handleEditPost = async (e) => {
+    e.preventDefault();
+
+    const postData = {
+      title: title,
+      content: description,
+      imageURL: imgUrl,
+    };
+
+    // editPost.mutate(id, postData); //not work - only accept 1 argument - follow below method
+    editPost.mutate({ id, data: postData }); // Pass a single object with id and postData
   };
+
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-[24rem]">
+        Error loading posts
+      </div>
+    );
 
   return (
     <div>
-      {loading ? (
+      {isLoading ? (
         <div className="flex justify-center items-center h-[24rem]">
           <Oval
             visible={true}
@@ -86,7 +99,7 @@ const EditPost = () => {
           />
         </div>
       ) : (
-        <form className="px-[2rem] mt-14" onSubmit={deletePost}>
+        <form className="px-[2rem] mt-14" onSubmit={handleEditPost}>
           <div className="grid gap-6 mb-6 md:grid-cols-2 ">
             <div>
               <label

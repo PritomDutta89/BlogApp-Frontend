@@ -2,12 +2,8 @@ import axios from "axios";
 import { BASE_URL } from "./helper";
 
 export const fetchBlogList = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/api/posts`);
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
+  const response = await axios.get(`${BASE_URL}/api/posts`);
+  return response.data;
 };
 
 export const createBlogPost = async (data) => {
@@ -37,7 +33,7 @@ export const deleteBlogPost = async (id) => {
   }
 };
 
-export const updateBlogPost = async (id, data) => {
+export const updateBlogPost = async ({ id, data }) => {
   try {
     const response = await axios.put(`${BASE_URL}/api/posts/${id}`, data);
     return response.data;
