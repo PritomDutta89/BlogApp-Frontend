@@ -5,6 +5,7 @@ import { LoginApi, RegisterApi } from "../../services/Api";
 import { useDataContext } from "../../context/DataContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useMutation } from "react-query";
 
 const LoginPopUp = ({ setShowLogin }) => {
   const [currState, setCurrState] = useState("Login");
@@ -13,7 +14,70 @@ const LoginPopUp = ({ setShowLogin }) => {
     email: "",
     password: "",
   });
-  const { token, setToken } = useDataContext();
+  const { setToken } = useDataContext();
+
+  // React query
+  const logIn = useMutation(LoginApi, {
+    onSuccess: (data) => {
+      setToken(data.data.token);
+      localStorage.setItem("token", data.data.token);
+      setShowLogin(false);
+
+      toast.success("Login Successfully!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    },
+    onError: () => {
+      toast.error("Please try again.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    },
+  });
+
+  const signUp = useMutation(RegisterApi, {
+    onSuccess: (data) => {
+      setToken(data.data.token);
+      localStorage.setItem("token: ", data.data.token);
+      setShowLogin(false);
+
+      toast.success("Register Successfully!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    },
+    onError: () => {
+      toast.error("Please try again.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    },
+  });
 
   const onChangeHandler = (event) => {
     setData((prv) => ({ ...prv, [event.target.name]: event.target.value }));
@@ -23,65 +87,9 @@ const LoginPopUp = ({ setShowLogin }) => {
     e.preventDefault();
 
     if (currState === "Login") {
-      const res = await LoginApi(data);
-
-      if (res.data.success) {
-        setToken(res.data.token);
-        localStorage.setItem("token", res.data.token);
-        setShowLogin(false);
-
-        toast.success("Login Successfully!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else {
-        toast.error("Please try again.", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+      logIn.mutate(data);
     } else if (currState === "Signin") {
-      const res = await RegisterApi(data);
-
-      if (res.data.success) {
-        setToken(res.data.token);
-        localStorage.setItem("token: ", res.data.token);
-        setShowLogin(false);
-
-        toast.success("Register Successfully!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else {
-        toast.error("Please try again.", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+      signUp.mutate(data);
     }
   };
 
