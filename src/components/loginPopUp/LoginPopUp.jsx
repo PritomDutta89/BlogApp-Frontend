@@ -51,7 +51,7 @@ const LoginPopUp = ({ setShowLogin }) => {
   const signUp = useMutation(RegisterApi, {
     onSuccess: (data) => {
       setToken(data.data.token);
-      localStorage.setItem("token: ", data.data.token);
+      localStorage.setItem("token", data.data.token);
       setShowLogin(false);
 
       toast.success("Register Successfully!", {
